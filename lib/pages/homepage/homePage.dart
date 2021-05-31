@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/widgets/customWidget.dart';
 
 import 'newsCard.dart';
 
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
       children: <Widget>[
         Hero(
           tag: 'headerImage',
-          child: Image.network(
+          child: customImage(
               'https://www.channelnomics.com/wp-content/uploads/2019/04/surface-Hub-2s-770x515.jpg'),
         ),
         Container(
@@ -39,35 +40,54 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          currentIndex: 0,
+          fixedColor: Theme.of(context).primaryColorLight,
+          type: BottomNavigationBarType.shifting,
+          unselectedItemColor: Theme.of(context).primaryColor,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home), title: Text('Home')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search), title: Text('Home')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.play_arrow), title: Text('Home')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person), title: Text('Home')),
+          ],
+          elevation: 5,
+        ),
         body: SafeArea(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            centerTitle: true,
-            title: Text(
-              'NEWS',
-              style: AppTheme.h2Style.copyWith(
-                  color: Theme.of(context).colorScheme.primaryVariant),
-            ),
-            backgroundColor: Theme.of(context).backgroundColor,
-            pinned: true,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                centerTitle: true,
+                title: Text(
+                  'NEWS',
+                  style: AppTheme.h2Style.copyWith(
+                      color: Theme.of(context).colorScheme.primaryVariant),
+                ),
+                backgroundColor: Theme.of(context).backgroundColor,
+                pinned: true,
+              ),
+              SliverToBoxAdapter(
+                child: _headerNews(),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  NewsCard(),
+                  NewsCard(),
+                  NewsCard(),
+                  NewsCard(),
+                  NewsCard(),
+                  NewsCard(),
+                  NewsCard(),
+                ]),
+              )
+            ],
           ),
-          SliverToBoxAdapter(
-            child: _headerNews(),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              NewsCard(),
-              NewsCard(),
-              NewsCard(),
-              NewsCard(),
-              NewsCard(),
-              NewsCard(),
-              NewsCard(),
-            ]),
-          )
-        ],
-      ),
-    ));
+        ));
   }
 }

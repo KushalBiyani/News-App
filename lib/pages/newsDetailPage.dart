@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/widgets/customWidget.dart';
 
 class NewsDetailPage extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
       children: <Widget>[
         Hero(
           tag: 'headerImage',
-          child: Image.network(
+          child: customImage(
               'https://www.channelnomics.com/wp-content/uploads/2019/04/surface-Hub-2s-770x515.jpg'),
         ),
         Container(
