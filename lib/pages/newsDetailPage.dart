@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_news_app/helper/constants.dart';
+import 'package:my_news_app/blocs/newsBloc.dart';
+import 'package:my_news_app/model/newsResponseModel.dart';
 import 'package:my_news_app/theme/theme.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 
@@ -9,14 +10,20 @@ class NewsDetailPage extends StatefulWidget {
 }
 
 class _NewsDetailPageState extends State<NewsDetailPage> {
+  Article article;
+  @override
+  void initState() {
+    article = bloc.selectedNews;
+    super.initState();
+  }
+
   Widget _headerNews() {
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
         Hero(
           tag: 'headerImage',
-          child: customImage(
-              'https://www.channelnomics.com/wp-content/uploads/2019/04/surface-Hub-2s-770x515.jpg'),
+          child: customImage(article.urlToImage),
         ),
         Container(
           padding: EdgeInsets.only(left: 0, right: 10, bottom: 20),
@@ -63,7 +70,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
           SliverToBoxAdapter(
             child: _headerNews(),
           ),
-          SliverFillRemaining(
+          SliverToBoxAdapter(
               child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -72,26 +79,24 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 SizedBox(
                   height: 10,
                 ),
-                Text('Managing your workspace to more comfort',
-                    style: AppTheme.h1Style),
+                Text(article.title, style: AppTheme.h1Style),
                 SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: <Widget>[
-                    Text('Auther', style: AppTheme.h6Style),
+                    Text(article.author ?? '', style: AppTheme.h6Style),
                     SizedBox(
                       width: 10,
                     ),
-                    Text('17 March 2020 -', style: AppTheme.h6Style),
-                    Text('12:30', style: AppTheme.h6Style),
+                    Text(article.getTime(), style: AppTheme.h6Style),
                   ],
                 ),
                 Divider(
                   height: 20,
                   thickness: 1,
                 ),
-                Text(mockNews, style: AppTheme.h6Style)
+                Text(article.content, style: AppTheme.h6Style)
               ],
             ),
           ))

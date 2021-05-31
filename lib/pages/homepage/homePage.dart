@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_news_app/blocs/newsBloc.dart';
+import 'package:my_news_app/model/newsResponseModel.dart';
 import 'package:my_news_app/theme/theme.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 
@@ -10,6 +12,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    bloc.fetchAllNews();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   Widget _headerNews() {
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -75,17 +89,15 @@ class _HomePageState extends State<HomePage> {
               SliverToBoxAdapter(
                 child: _headerNews(),
               ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  NewsCard(),
-                  NewsCard(),
-                  NewsCard(),
-                  NewsCard(),
-                  NewsCard(),
-                  NewsCard(),
-                  NewsCard(),
-                ]),
-              )
+              StreamBuilder(
+                  stream: bloc.allNews,
+                  builder: (context, AsyncSnapshot<List<Article>> snapshot) =>
+                      SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                        (context, index) =>
+                            NewsCard(artical: snapshot.data[index]),
+                        childCount: snapshot.hasData ? snapshot.data.length : 0,
+                      )))
             ],
           ),
         ));

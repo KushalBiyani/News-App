@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:my_news_app/blocs/newsBloc.dart';
 import 'package:my_news_app/theme/theme.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
+import 'package:my_news_app/model/newsResponseModel.dart';
 
 class NewsCard extends StatelessWidget {
+  final Article artical;
+  const NewsCard({Key key, this.artical}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
+          bloc.setNews = artical;
           Navigator.pushNamed(context, '/detail');
         },
         child: Container(
@@ -22,19 +27,22 @@ class NewsCard extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: Container(
                         color: Theme.of(context).primaryColor,
-                        child: customImage(
-                            'https://techcrunch.com/wp-content/uploads/2020/01/GettyImages-957211010.jpg?w=600',
-                            fit: BoxFit.cover)),
+                        child:
+                            customImage(artical.urlToImage, fit: BoxFit.cover)),
                   )),
-              Column(
+              SizedBox(width: 10),
+              Expanded(
+                  child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(),
                   Container(
-                    padding: EdgeInsets.only(left: 10),
-                    width: MediaQuery.of(context).size.width * .64,
-                    child: Text('Managing your workspace to more comfort',
-                        style: AppTheme.titleStyle),
+                    height: 52,
+                    child: Text(
+                      artical.title,
+                      style: AppTheme.titleStyle,
+                      overflow: TextOverflow.fade,
+                    ),
                   ),
                   Row(
                     children: <Widget>[
@@ -52,14 +60,13 @@ class NewsCard extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10),
-                        width: MediaQuery.of(context).size.width * .5,
                         child:
                             Text('17 Jan 2020', style: AppTheme.subTitleStyle),
                       ),
                     ],
                   )
                 ],
-              )
+              ))
             ],
           ),
         ));
