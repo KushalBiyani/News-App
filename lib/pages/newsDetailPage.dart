@@ -96,7 +96,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                   height: 20,
                   thickness: 1,
                 ),
-                Text(article.content, style: AppTheme.h6Style)
+                Text(article.content ?? '', style: AppTheme.h6Style)
               ],
             ),
           ))

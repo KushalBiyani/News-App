@@ -27,8 +27,11 @@ class NewsCard extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: Container(
                         color: Theme.of(context).primaryColor,
-                        child:
-                            customImage(artical.urlToImage, fit: BoxFit.cover)),
+                        child: artical.urlToImage == null ||
+                                artical.urlToImage.isEmpty
+                            ? Container()
+                            : customImage(artical.urlToImage,
+                                fit: BoxFit.cover)),
                   )),
               SizedBox(width: 10),
               Expanded(
@@ -46,22 +49,23 @@ class NewsCard extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      Chip(
-                        label: Text(
-                          'Tip',
-                        ),
-                        labelStyle: AppTheme.h6Style.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                        backgroundColor: Theme.of(context).primaryColor,
+                      Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: Text(
+                          bloc.getGategory,
+                          style: AppTheme.h6Style.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10),
-                        child:
-                            Text('17 Jan 2020', style: AppTheme.subTitleStyle),
+                        child: Text(artical.getDateOnly(),
+                            style: AppTheme.subTitleStyle),
                       ),
                     ],
                   )

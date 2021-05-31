@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:intl/intl.dart';
 
 class NewsApiResonse {
@@ -87,6 +88,12 @@ class Article {
       };
   String getTime() {
     var formatter = new DateFormat('dd MMMM yyyy h:m');
+    String formatted = formatter.format(publishedAt);
+    return formatted;
+  }
+
+  String getDateOnly() {
+    var formatter = new DateFormat('dd MMMM yyyy');
     String formatted = formatter.format(publishedAt);
     return formatted;
   }
