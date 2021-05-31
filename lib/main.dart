@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_news_app/pages/homepage/homePage.dart';
+import 'package:my_news_app/helper/routes.dart';
 import 'package:my_news_app/theme/theme.dart';
 
 void main() => runApp(MyApp());
@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      routes: Routes.getRoute(),
     );
   }
 }
