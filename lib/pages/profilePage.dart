@@ -7,16 +7,16 @@ class ProfilePage extends StatelessWidget {
 
   Widget _headerWidget(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: Column(
         children: <Widget>[
-          SizedBox(height: 30),
+          SizedBox(height: 50),
           Row(
             children: <Widget>[
               CircleAvatar(
                 radius: 50,
                 backgroundImage: customAdvanceNetworkImage(
-                    'https://media1.s-nbcnews.com/j/newscms/2019_14/2808721/190403-joaquin-phoenix-joker-cs-1005a_4715890895d3fad1f9e7ccec85386821.fit-760w.jpg'),
+                    'https://instagram.fbom26-1.fna.fbcdn.net/v/t51.2885-19/s150x150/153528906_874730533313174_1105060530992836691_n.jpg?tp=1&_nc_ht=instagram.fbom26-1.fna.fbcdn.net&_nc_ohc=TZ1i7qyxlEgAX_C9kh1&edm=AB32dywBAAAA&ccb=7-4&oh=9644e14e7f64f9b3570e13897390b38e&oe=60BE1007&_nc_sid=c59781'),
                 backgroundColor: Theme.of(context).primaryColor,
               ),
               SizedBox(
@@ -26,11 +26,10 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text('TheAlphamerc',
-                      style: AppTheme.h2Style
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 20),
-                  Text('Loyal Reader', style: AppTheme.h5Style),
+                  Text('Kushal Biyani',
+                      style: kh1Style.copyWith(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10),
+                  Text('App Developer', style: kh4Style),
                 ],
               )
             ],
@@ -43,8 +42,7 @@ class ProfilePage extends StatelessWidget {
               _estimateWidget('News Read', '81K'),
             ],
           ),
-          SizedBox(height: 30),
-          Divider()
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -57,41 +55,39 @@ class ProfilePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text(count,
-              style: AppTheme.h4Style.copyWith(fontWeight: FontWeight.bold)),
+          Text(count, style: kh4Style.copyWith(fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
-          Text(text, style: AppTheme.h5Style),
+          Text(text, style: kh5Style),
         ],
       )),
     );
   }
 
   Widget _settingRow(
-      BuildContext context, IconData icon1, String text, bool isEnable,
-      {Color color = Colors.black}) {
+    BuildContext context,
+    IconData icon1,
+    String text,
+    bool isEnable,
+  ) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 0),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      color: isEnable
-          ? Theme.of(context).primaryColor.withAlpha(100)
-          : Theme.of(context).backgroundColor,
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: <Widget>[
           Icon(
             icon1,
-            color: color,
+            color: Colors.white,
           ),
           SizedBox(width: 10),
-          Text(text,
-              style: AppTheme.h4Style.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-              )),
+          Text(
+            text,
+            style: kh3Style.copyWith(fontWeight: FontWeight.bold),
+          ),
           Expanded(child: SizedBox()),
           isEnable == null
               ? Container()
               : Switch(
-                  activeColor: Theme.of(context).primaryColor,
+                  activeColor: Colors.teal[400],
+                  inactiveThumbColor: Colors.white,
                   onChanged: (_) {},
                   value: isEnable,
                 )
@@ -108,13 +104,12 @@ class ProfilePage extends StatelessWidget {
         children: <Widget>[
           Icon(
             icon1,
-            color: Theme.of(context).errorColor,
+            color: Colors.teal,
           ),
           SizedBox(width: 10),
           Text(text,
-              style: AppTheme.h3Style.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).errorColor)),
+              style: kh3Style.copyWith(
+                  fontWeight: FontWeight.bold, color: Colors.teal)),
           Expanded(child: SizedBox()),
         ],
       ),
@@ -124,7 +119,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: kBackgroundColor,
         body: SafeArea(
           child: CustomScrollView(
             slivers: <Widget>[
@@ -133,27 +128,33 @@ class ProfilePage extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    buildDivider(),
                     _settingRow(
                         context, Icons.lightbulb_outline, 'Night', true),
+                    buildDivider(),
                     _settingRow(
                         context, Icons.notifications, 'Notification', false),
-                    //SizedBox(height: 10),
+                    buildDivider(),
                     _settingRow(context, Icons.share, 'Social Media', false),
                     SizedBox(height: 5),
-                    Divider(
-                      height: 0,
-                    ),
+                    buildDivider(),
                     SizedBox(height: 5),
                     _logout(context, Icons.exit_to_app, 'Logout'),
                   ],
                 ),
-              ))
+              )),
             ],
           ),
         ));
   }
+}
+
+Widget buildDivider() {
+  return Divider(
+    thickness: 0.5,
+    color: Colors.white38,
+  );
 }

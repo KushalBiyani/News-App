@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_news_app/blocs/newsBloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
 import 'package:my_news_app/theme/theme.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
@@ -7,31 +8,35 @@ import 'package:my_news_app/model/newsResponseModel.dart';
 class NewsCard extends StatelessWidget {
   final Article artical;
   final bool isVideoNews;
-  const NewsCard({Key key, this.artical, this.isVideoNews = false})
+  final String type;
+  const NewsCard(
+      {Key key, this.artical, this.isVideoNews = false, this.type = ''})
       : super(key: key);
   Widget _playWidget(BuildContext context) {
     return SizedBox(
         height: 20,
         child: FittedBox(
-            fit: BoxFit.contain,
-            child: Container(
-                height: 10,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).backgroundColor),
-                child: Icon(
-                  Icons.play_arrow,
-                  color: Theme.of(context).disabledColor,
-                  size: 3,
-                ))));
+          fit: BoxFit.contain,
+          child: Container(
+            height: 10,
+            alignment: Alignment.center,
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: Colors.teal),
+            child: Icon(
+              Icons.play_arrow,
+              color: Colors.white,
+              size: 3,
+            ),
+          ),
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          bloc.setNews = artical;
+          BlocProvider.of<DetailBloc>(context)
+              .add(SelectNewsForDetail(article: artical));
           Navigator.pushNamed(context, '/detail');
         },
         child: Container(
@@ -61,36 +66,38 @@ class NewsCard extends StatelessWidget {
               SizedBox(width: 10),
               Expanded(
                   child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  SizedBox(),
                   Container(
-                    height: 52,
+                    height: 65,
                     child: Text(
                       artical.title,
-                      style: AppTheme.titleStyle,
-                      overflow: TextOverflow.fade,
+                      style: kh5Style,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
                     children: <Widget>[
                       Container(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.teal,
                         ),
-                        child: Text(
-                          bloc.getGategory,
-                          style: AppTheme.h6Style.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
+                        child: Text(type.length < 2 ? 'General' : "$type",
+                            style: type.length > 10 ? kh4Style : kh3Style),
                       ),
                       Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(artical.getDateOnly(),
-                            style: AppTheme.subTitleStyle),
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          artical.getDateOnly().substring(0, 8),
+                          style: TextStyle(
+                            color: Colors.white60,
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
                     ],
                   )

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_news_app/pages/categoryPage.dart';
 import 'package:my_news_app/pages/homepage/homePage.dart';
 import 'package:my_news_app/pages/newsApp.dart';
-import 'package:my_news_app/pages/newsDetailPage.dart';
+import 'package:my_news_app/pages/newsDetail/newsDetailPage.dart';
 import 'package:my_news_app/pages/profilePage.dart';
 
 class Routes {
