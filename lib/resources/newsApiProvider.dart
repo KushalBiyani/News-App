@@ -1,5 +1,3 @@
-// @dart=2.9
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
@@ -8,9 +6,17 @@ class NewsApiProvider {
   final _apiKey = Constant.newsApiKey;
   final http.Client httpClient = http.Client();
 
-  Future<List<Article>> fetchNewsList({String category = ""}) async {
-    Uri url = Uri.parse(
-        "${Constant.baseUrl}${Constant.topHeadLine}?country=in&apiKey=$_apiKey&category=$category");
+  Future<List<Article>> fetchNewsList(
+      {String category = "", String search = ""}) async {
+    Uri url;
+    if (search == "" || search == null) {
+      url = Uri.parse(
+          "${Constant.baseUrl}${Constant.topHeadLine}?country=in&apiKey=$_apiKey&category=$category");
+    } else {
+      url = Uri.parse(Uri.encodeFull(
+          Constant.baseUrl + 'everything?q=' + search + '&apiKey=' + _apiKey));
+      print(search);
+    }
     final response = await this.httpClient.get(url);
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON

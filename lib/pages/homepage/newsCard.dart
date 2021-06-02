@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
-import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
 
@@ -12,7 +12,7 @@ class NewsCard extends StatelessWidget {
   const NewsCard(
       {Key key, this.artical, this.isVideoNews = false, this.type = ''})
       : super(key: key);
-  Widget _playWidget(BuildContext context) {
+  Widget _playWidget() {
     return SizedBox(
         height: 20,
         child: FittedBox(
@@ -60,7 +60,7 @@ class NewsCard extends StatelessWidget {
                                   ? Container()
                                   : customImage(artical.urlToImage,
                                       fit: BoxFit.cover)),
-                          isVideoNews ? _playWidget(context) : Container()
+                          isVideoNews ? _playWidget() : Container()
                         ],
                       ))),
               SizedBox(width: 10),
@@ -72,7 +72,7 @@ class NewsCard extends StatelessWidget {
                     height: 65,
                     child: Text(
                       artical.title,
-                      style: kh5Style,
+                      style: kh6Style,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -87,7 +87,10 @@ class NewsCard extends StatelessWidget {
                           color: Colors.teal,
                         ),
                         child: Text(type.length < 2 ? 'General' : "$type",
-                            style: type.length > 10 ? kh4Style : kh3Style),
+                            style: type.length > 10
+                                ? kh5Style
+                                : kh4Style.copyWith(
+                                    fontWeight: FontWeight.bold)),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 5),

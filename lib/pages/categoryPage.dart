@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_news_app/pages/homepage/bloc/bloc.dart';
-import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/helper/constants.dart';
+import 'package:my_news_app/pages/videoNewsPage.dart';
 import 'package:my_news_app/widgets/bloc/bloc.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 
@@ -17,7 +18,8 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget _categoryCard(String text, String type, String imgPath) {
     return InkWell(
         onTap: () {
-          BlocProvider.of<NewsBloc>(context).add(Fetch(type: type));
+          BlocProvider.of<NewsBloc>(context)
+              .add(Fetch(type: type, search: null));
           BlocProvider.of<NavigationBloc>(context).add(Navigate(pageIndex: 0));
 
           widget.controller.animateTo(0,
@@ -56,9 +58,13 @@ class _CategoryPageState extends State<CategoryPage> {
                   color: Colors.white,
                   size: 30,
                 ),
-                onPressed: () {})
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: Search(),
+                  );
+                })
           ],
-          // bottom:PreferredSize(child:  Divider(height: 0,), preferredSize: Size(10,0))
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -70,7 +76,6 @@ class _CategoryPageState extends State<CategoryPage> {
             children: <Widget>[
               _categoryCard('Tech', 'technology',
                   'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSs77jFDj9CMVP5ixm7ryIB2WPbUkGRAHBclciGzQYhxq_Dz-IU'),
-              //  _categoryCard('Fashion','https://thumbs.dreamstime.com/b/abstract-woman-portrait-fashion-background-hand-painted-art-illustration-56110086.jpg'),
               _categoryCard('Economy', 'business',
                   'https://st.depositphotos.com/1776223/2024/i/950/depositphotos_20243063-stock-photo-a-hand-holding-a-fan.jpg'),
               _categoryCard('Sport', 'sports',
@@ -90,5 +95,40 @@ class _CategoryPageState extends State<CategoryPage> {
             ],
           ),
         ));
+  }
+}
+
+class Search extends SearchDelegate {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return <Widget>[
+      IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          query = "";
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    BlocProvider.of<NewsBloc>(context).add(Fetch(search: query));
+    return VideoNewsPage();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Container();
   }
 }

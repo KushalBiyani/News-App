@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -17,7 +17,6 @@ class ProfilePage extends StatelessWidget {
                 radius: 50,
                 backgroundImage: customAdvanceNetworkImage(
                     'https://instagram.fbom26-1.fna.fbcdn.net/v/t51.2885-19/s150x150/153528906_874730533313174_1105060530992836691_n.jpg?tp=1&_nc_ht=instagram.fbom26-1.fna.fbcdn.net&_nc_ohc=TZ1i7qyxlEgAX_C9kh1&edm=AB32dywBAAAA&ccb=7-4&oh=9644e14e7f64f9b3570e13897390b38e&oe=60BE1007&_nc_sid=c59781'),
-                backgroundColor: Theme.of(context).primaryColor,
               ),
               SizedBox(
                 width: 20,
@@ -64,7 +63,6 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _settingRow(
-    BuildContext context,
     IconData icon1,
     String text,
     bool isEnable,
@@ -96,7 +94,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _logout(BuildContext context, IconData icon1, String text) {
+  Widget _logout(IconData icon1, String text) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -132,17 +130,15 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     buildDivider(),
-                    _settingRow(
-                        context, Icons.lightbulb_outline, 'Night', true),
+                    _settingRow(Icons.lightbulb_outline, 'Night', true),
                     buildDivider(),
-                    _settingRow(
-                        context, Icons.notifications, 'Notification', false),
+                    _settingRow(Icons.notifications, 'Notification', false),
                     buildDivider(),
-                    _settingRow(context, Icons.share, 'Social Media', false),
+                    _settingRow(Icons.share, 'Social Media', false),
                     SizedBox(height: 5),
                     buildDivider(),
                     SizedBox(height: 5),
-                    _logout(context, Icons.exit_to_app, 'Logout'),
+                    _logout(Icons.exit_to_app, 'Logout'),
                   ],
                 ),
               )),

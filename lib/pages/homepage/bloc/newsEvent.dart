@@ -1,16 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-abstract class NewsEvent extends Equatable{
+abstract class NewsEvent extends Equatable {
   const NewsEvent();
 
   @override
   List<Object> get props => [];
 }
+
 class Fetch extends NewsEvent {
   final String type;
-
-  Fetch({this.type});
-   @override
+  final String search;
+  Fetch({this.type, this.search});
+  @override
   List<Object> get props => [type];
 
   @override

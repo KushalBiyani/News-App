@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
 import 'package:my_news_app/pages/homepage/bloc/bloc.dart';
 import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
-import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -102,8 +102,10 @@ class NewsDetailPage extends StatelessWidget {
               article.url != null
                   ? InkWell(
                       child: Text(
-                        'Read More',
-                        style: kh4Style.copyWith(color: Colors.teal),
+                        'Full Article at >>',
+                        style: kh4Style.copyWith(
+                            color: Colors.teal,
+                            decoration: TextDecoration.underline),
                       ),
                       onTap: () => launch(article.url))
                   : Container()

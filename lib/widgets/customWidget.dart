@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:my_news_app/theme/theme.dart';
+import 'package:my_news_app/helper/constants.dart';
 
 Widget customText(String msg,
     {TextStyle style,
@@ -73,10 +73,11 @@ String getTypeImage(String type) {
 }
 
 Widget buildAppBar(String type) {
+  type = type == null ? "" : type.toUpperCase();
   return SliverAppBar(
     centerTitle: true,
     title: Text(
-      '${type.toUpperCase()} NEWS',
+      '$type NEWS',
       style: kAppbarText,
     ),
     backgroundColor: Colors.black,

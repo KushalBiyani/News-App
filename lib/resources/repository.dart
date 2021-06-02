@@ -6,6 +6,7 @@ import 'newsApiProvider.dart';
 class Repository {
   final NewsApiProvider newsApiProvider = NewsApiProvider();
 
-  Future<List<Article>> fetchAllNews({String category = 'General'}) =>
-      newsApiProvider.fetchNewsList(category: category);
+  Future<List<Article>> fetchAllNews(
+          {String category = 'General', String search}) =>
+      newsApiProvider.fetchNewsList(category: category, search: search);
 }
