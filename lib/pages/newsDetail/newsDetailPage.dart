@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
+import 'package:my_news_app/pages/NewsWebView.dart';
 import 'package:my_news_app/pages/homepage/bloc/bloc.dart';
 import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
 import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -49,7 +49,6 @@ class NewsDetailPage extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () async {
-                  final RenderBox box = context.findRenderObject();
                   if (Platform.isAndroid && article.urlToImage != null) {
                     var response = await get(Uri.parse(article.urlToImage));
                     final documentDirectory =
@@ -123,7 +122,13 @@ class NewsDetailPage extends StatelessWidget {
                             color: Colors.teal,
                             decoration: TextDecoration.underline),
                       ),
-                      onTap: () => launch(article.url))
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NewsWebView(url: article.url)));
+                      })
                   : Container()
             ],
           ),
@@ -135,8 +140,9 @@ class NewsDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBackgroundColor,
-        body: SafeArea(child: BlocBuilder<DetailBloc, DetailState>(
+      backgroundColor: kBackgroundColor,
+      body: SafeArea(
+        child: BlocBuilder<DetailBloc, DetailState>(
           builder: (context, state) {
             if (state == null) {
               return Center(child: Text('Null bloc'));
@@ -157,6 +163,8 @@ class NewsDetailPage extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
           },
-        )));
+        ),
+      ),
+    );
   }
 }

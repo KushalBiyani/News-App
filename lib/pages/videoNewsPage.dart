@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
 import 'package:my_news_app/pages/homepage/bloc/bloc.dart';
-import 'package:my_news_app/pages/homepage/newsCard.dart';
 import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
 import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
