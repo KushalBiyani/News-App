@@ -28,12 +28,16 @@ class _CategoryPageState extends State<CategoryPage> {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    color: Theme.of(context).primaryColor,
-                    child: customImage(imgPath, fit: BoxFit.cover))),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child:
+                          customImage(imgPath, fit: BoxFit.fill, asset: true))),
+            ),
             Text(text, style: kh2Style)
           ],
         ));
@@ -74,24 +78,15 @@ class _CategoryPageState extends State<CategoryPage> {
             mainAxisSpacing: 10,
             crossAxisCount: 3,
             children: <Widget>[
-              _categoryCard('Tech', 'technology',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSs77jFDj9CMVP5ixm7ryIB2WPbUkGRAHBclciGzQYhxq_Dz-IU'),
-              _categoryCard('Economy', 'business',
-                  'https://st.depositphotos.com/1776223/2024/i/950/depositphotos_20243063-stock-photo-a-hand-holding-a-fan.jpg'),
-              _categoryCard('Sport', 'sports',
-                  'https://images.unsplash.com/photo-1521412644187-c49fa049e84d?ixlib=rb-1.2.1&w=1000&q=80'),
-              _categoryCard('Health', 'health',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTaCep4PcqSpssotFl08L8j9TNlE0WrYZdP_Ej6BjW-RXArQoFO'),
-              _categoryCard('Fun', 'entertainment',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTj8smVeHddjHD8AlOmvVx7CEX8t_nS81iW-UamtjKkG-q5BMi8'),
-              _categoryCard('Science', 'science',
-                  'https://c.wallhere.com/photos/34/7f/nature_photography_portrait_display-36961.jpg!d'),
-              _categoryCard('General', 'general',
-                  'https://66.media.tumblr.com/3e368d4f495ab3e07b0c7114955b48dc/tumblr_mz8od094wc1rtp2uuo1_500.jpg'),
-              _categoryCard('Music', '',
-                  'https://i.pinimg.com/originals/06/c6/b5/06c6b57d26549b1ebdab20926a9e9e1e.jpg'),
-              _categoryCard('Arts', '',
-                  'https://vistapointe.net/images/fan-art-wallpaper-2.jpg'),
+              _categoryCard('Tech', 'technology', 'tech.jpg'),
+              _categoryCard('Economy', 'business', 'economy.jpg'),
+              _categoryCard('Sport', 'sports', 'sports.jpg'),
+              _categoryCard('Health', 'health', 'health.jpg'),
+              _categoryCard('Fun', 'entertainment', 'fun.jpg'),
+              _categoryCard('Science', 'science', 'science.jpg'),
+              _categoryCard('General', 'general', 'general.jpg'),
+              _categoryCard('Music', '', 'music.jpg'),
+              _categoryCard('Arts', '', 'art.jpg'),
             ],
           ),
         ));

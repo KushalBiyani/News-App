@@ -16,22 +16,25 @@ class VideoNewsPage extends StatelessWidget {
       },
       child: Column(
         children: [
-          article.urlToImage != null
-              ? Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: <Widget>[
-                    Hero(
-                      tag: 'headerImage',
-                      child: customImage(article.urlToImage),
-                    ),
-                    Align(
-                        child: Padding(
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              Hero(
+                tag: 'headerImage',
+                child: article.urlToImage == null || article.urlToImage.isEmpty
+                    ? customImage('images/noImage.jpg',
+                        fit: BoxFit.cover, asset: true)
+                    : customImage(article.urlToImage, fit: BoxFit.cover),
+              ),
+              article.urlToImage != null
+                  ? Align(
+                      child: Padding(
                       padding: EdgeInsets.all(10),
                       child: _playWidget(context),
                     ))
-                  ],
-                )
-              : Container(),
+                  : Container()
+            ],
+          ),
           Container(
             padding: EdgeInsets.only(left: 15, right: 5, bottom: 8, top: 8),
             child: Column(

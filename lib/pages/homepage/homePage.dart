@@ -25,7 +25,10 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           Hero(
             tag: 'headerImage',
-            child: customImage(article.urlToImage),
+            child: article.urlToImage == null || article.urlToImage.isEmpty
+                ? customImage('images/noImage.jpg',
+                    fit: BoxFit.cover, asset: true)
+                : customImage(article.urlToImage, fit: BoxFit.cover),
           ),
           Container(
             padding: EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
