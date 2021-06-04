@@ -82,33 +82,41 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: SafeArea(
-        child: BlocBuilder<NewsBloc, NewsState>(
-          builder: (context, state) {
-            if (state == null) {
-              return Center(child: Text('Null block'));
-            }
-            if (state is Failure) {
-              return Center(
-                  child: Text(
-                'Something went wrong',
-                style: kh2Style,
-              ));
-            }
-            if (state is Loaded) {
-              if (state.items == null || state.items.isEmpty) {
+      body: RefreshIndicator(
+        strokeWidth: 3,
+        onRefresh: () {
+          final newsBloc = BlocProvider.of<NewsBloc>(context)
+            ..add(Fetch(type: 'General'));
+          return newsBloc.stream.firstWhere((e) => e is! Loaded);
+        },
+        child: SafeArea(
+          child: BlocBuilder<NewsBloc, NewsState>(
+            builder: (context, state) {
+              if (state == null) {
+                return Center(child: Text('Null block'));
+              }
+              if (state is Failure) {
                 return Center(
                     child: Text(
-                  'No content avilable',
+                  'Something went wrong',
                   style: kh2Style,
                 ));
-              } else {
-                return _body(state.items, type: state.type);
               }
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+              if (state is Loaded) {
+                if (state.items == null || state.items.isEmpty) {
+                  return Center(
+                      child: Text(
+                    'No content avilable',
+                    style: kh2Style,
+                  ));
+                } else {
+                  return _body(state.items, type: state.type);
+                }
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       ),
     );
