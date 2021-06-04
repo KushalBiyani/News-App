@@ -7,6 +7,7 @@ class Repository {
   final NewsApiProvider newsApiProvider = NewsApiProvider();
 
   Future<List<Article>> fetchAllNews(
-          {String category = 'General', String search}) =>
-      newsApiProvider.fetchNewsList(category: category, search: search);
+          {String category = 'General', String search, String country}) =>
+      newsApiProvider.fetchNewsList(
+          category: category, search: search, country: country);
 }

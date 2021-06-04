@@ -22,6 +22,7 @@ dependencies:
   share_plus: "^2.1.2"
   path_provider: ^2.0.2
   webview_flutter: ^2.0.8
+  flag: ^5.0.0-nullsafety
 
 dev_dependencies:
   flutter_test:

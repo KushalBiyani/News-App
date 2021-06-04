@@ -7,9 +7,12 @@ class NewsApiProvider {
   final http.Client httpClient = http.Client();
 
   Future<List<Article>> fetchNewsList(
-      {String category = "", String search = ""}) async {
+      {String category = "", String search = "", String country = ""}) async {
     Uri url;
-    if (search == "" || search == null) {
+    if (country != null) {
+      url = Uri.parse(
+          "${Constant.baseUrl}${Constant.topHeadLine}?country=$country&apiKey=$_apiKey");
+    } else if (search == "" || search == null) {
       url = Uri.parse(
           "${Constant.baseUrl}${Constant.topHeadLine}?country=in&apiKey=$_apiKey&category=$category");
     } else {

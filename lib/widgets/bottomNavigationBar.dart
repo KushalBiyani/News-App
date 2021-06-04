@@ -32,7 +32,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home), title: Text('Home')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.play_circle_outline), title: Text('Video')),
+                icon: Icon(Icons.flag), title: Text('Flag')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.category), title: Text('Category')),
             BottomNavigationBarItem(

@@ -15,11 +15,3 @@ class SelectNewsForDetail extends NewsDetailEvent {
   @override
   String toString() => 'SelectNewsForDetail Page { Title:: ${article.title} }';
 }
-
-class SelectNewsForDetailed extends NewsDetailEvent {
-  final Article article;
-  const SelectNewsForDetailed({this.article});
-
-  @override
-  String toString() => 'SelectNewsForDetailed news { Title: ${article.title} }';
-}

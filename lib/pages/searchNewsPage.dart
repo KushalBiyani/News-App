@@ -6,38 +6,32 @@ import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
 import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 
-import 'newsCard.dart';
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  Widget _headerNews(Article article) {
+class SearchNewsPage extends StatelessWidget {
+  Widget _headerNews(BuildContext context, Article article) {
     return InkWell(
       onTap: () {
-        final detailBloc = BlocProvider.of<DetailBloc>(context);
-        detailBloc.add(SelectNewsForDetail(article: article));
+        BlocProvider.of<DetailBloc>(context)
+            .add(SelectNewsForDetail(article: article));
         Navigator.pushNamed(context, '/detail');
       },
       child: Column(
-        children: <Widget>[
+        children: [
           Hero(
-            tag: 'headerImage',
+            tag: article.url,
             child: article.urlToImage == null || article.urlToImage.isEmpty
                 ? customImage('images/noImage.jpg',
                     fit: BoxFit.cover, asset: true)
                 : customImage(article.urlToImage, fit: BoxFit.cover),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
+            color: kBackgroundColor,
+            padding: EdgeInsets.only(left: 15, right: 5, bottom: 8, top: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   article.title,
-                  style: kh3Style.copyWith(fontWeight: FontWeight.bold),
+                  style: kh4Style.copyWith(fontWeight: FontWeight.bold),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -48,32 +42,19 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Divider(thickness: 2),
-          )
         ],
       ),
     );
   }
 
-  Widget _body(
-    List<Article> list, {
-    String type,
-  }) {
+  Widget _body(List<Article> list, {String type}) {
     return CustomScrollView(
       slivers: <Widget>[
-        buildAppBar(type),
-        SliverToBoxAdapter(
-          child: _headerNews(list.first),
-        ),
         SliverList(
-            delegate: SliverChildBuilderDelegate(
-                (context, index) => NewsCard(
-                      artical: list[index + 1],
-                      type: type == null ? "GENERAL" : type.toUpperCase(),
-                    ),
-                childCount: list.length - 1))
+          delegate: SliverChildBuilderDelegate(
+              (context, index) => _headerNews(context, list[index]),
+              childCount: list.length),
+        ),
       ],
     );
   }
@@ -90,18 +71,14 @@ class _HomePageState extends State<HomePage> {
             }
             if (state is Failure) {
               return Center(
-                  child: Text(
-                'Something went wrong',
-                style: kh2Style,
-              ));
+                child: Text('Something went wrong', style: kh2Style),
+              );
             }
             if (state is Loaded) {
               if (state.items == null || state.items.isEmpty) {
                 return Center(
-                    child: Text(
-                  'No content avilable',
-                  style: kh2Style,
-                ));
+                  child: Text('No content avilable', style: kh2Style),
+                );
               } else {
                 return _body(state.items, type: state.type);
               }

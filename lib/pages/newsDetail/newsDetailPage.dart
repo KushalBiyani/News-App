@@ -92,8 +92,12 @@ class NewsDetailPage extends StatelessWidget {
                 height: 10,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(article.author ?? '', style: kh6Style),
+                  Text(
+                    article.author.substring(0, 20) ?? '',
+                    style: kh6Style,
+                  ),
                   SizedBox(
                     width: 10,
                   ),

@@ -10,7 +10,8 @@ abstract class NewsEvent extends Equatable {
 class Fetch extends NewsEvent {
   final String type;
   final String search;
-  Fetch({this.type, this.search});
+  final String country;
+  Fetch({this.type, this.search, this.country});
   @override
   List<Object> get props => [type];
 

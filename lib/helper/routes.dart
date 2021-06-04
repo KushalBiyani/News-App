@@ -4,6 +4,7 @@ import 'package:my_news_app/pages/homepage/homePage.dart';
 import 'package:my_news_app/pages/newsApp.dart';
 import 'package:my_news_app/pages/newsDetail/newsDetailPage.dart';
 import 'package:my_news_app/pages/profilePage.dart';
+import 'package:my_news_app/pages/searchNewsPage.dart';
 
 class Routes {
   static Map<String, WidgetBuilder> getRoute() {
@@ -13,6 +14,7 @@ class Routes {
       '/detail': (_) => NewsDetailPage(),
       '/category': (_) => CategoryPage(),
       '/profile': (_) => ProfilePage(),
+      '/searchNews': (_) => SearchNewsPage()
     };
   }
 }
