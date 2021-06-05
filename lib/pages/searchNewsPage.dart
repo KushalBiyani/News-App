@@ -19,8 +19,7 @@ class SearchNewsPage extends StatelessWidget {
           Hero(
             tag: article.url,
             child: article.urlToImage == null || article.urlToImage.isEmpty
-                ? customImage('images/noImage.jpg',
-                    fit: BoxFit.cover, asset: true)
+                ? customImage('noImage.jpg', fit: BoxFit.cover, asset: true)
                 : customImage(article.urlToImage, fit: BoxFit.cover),
           ),
           Container(

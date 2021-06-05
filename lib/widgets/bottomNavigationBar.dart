@@ -29,14 +29,11 @@ class BottomNavigationBarWidget extends StatelessWidget {
                 duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
           items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Flag'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text('Home')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.flag), title: Text('Flag')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: Text('Category')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('Profile')),
+                icon: Icon(Icons.category), label: 'Category'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
           elevation: 10,
         );

@@ -32,7 +32,7 @@ class NewsCard extends StatelessWidget {
                 child: Container(
                   child:
                       artical.urlToImage == null || artical.urlToImage.isEmpty
-                          ? customImage('images/noImage.jpg',
+                          ? customImage('noImage.jpg',
                               fit: BoxFit.cover, asset: true)
                           : customImage(artical.urlToImage, fit: BoxFit.cover),
                 ),
