@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_news_app/helper/constants.dart';
 import 'package:my_news_app/helper/firebaseHelper.dart';
-import 'package:my_news_app/pages/newsApp.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String id = 'login_screen';
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -30,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
         this.setState(() {
           isLoading = false;
         });
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NewsApp()));
+        Navigator.popAndPushNamed(context, '/');
       }
     } catch (e) {
       ScaffoldMessenger.of(context)

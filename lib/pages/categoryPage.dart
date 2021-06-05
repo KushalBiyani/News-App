@@ -48,6 +48,7 @@ class _CategoryPageState extends State<CategoryPage> {
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
         elevation: 5,
+        leading: Container(),
         centerTitle: true,
         backgroundColor: Colors.black,
         title: Text(

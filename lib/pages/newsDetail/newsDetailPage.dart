@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:my_news_app/helper/firebaseHelper.dart';
 import 'package:my_news_app/model/newsResponseModel.dart';
 import 'package:my_news_app/pages/NewsWebView.dart';
 import 'package:my_news_app/pages/homepage/bloc/bloc.dart';
@@ -12,7 +14,14 @@ import 'package:my_news_app/widgets/customWidget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
-class NewsDetailPage extends StatelessWidget {
+class NewsDetailPage extends StatefulWidget {
+  @override
+  _NewsDetailPageState createState() => _NewsDetailPageState();
+}
+
+class _NewsDetailPageState extends State<NewsDetailPage> {
+  User currentUser = FirebaseAuth.instance.currentUser;
+
   Widget _headerNews(BuildContext context, Article article) {
     return Stack(
       alignment: Alignment.topCenter,
@@ -40,9 +49,18 @@ class NewsDetailPage extends StatelessWidget {
               ),
               Expanded(child: SizedBox()),
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  bool present =
+                      await checkPresent(article.url, currentUser.uid);
+                  if (!present) {
+                    addsaved(currentUser.uid, article);
+                    setState(() {
+                      article.toggleSaved();
+                    });
+                  }
+                },
                 icon: Icon(
-                  Icons.favorite_border,
+                  article.saved ? Icons.favorite : Icons.favorite_border,
                   color: Colors.white,
                   size: 32,
                 ),
@@ -101,7 +119,9 @@ class NewsDetailPage extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Text(article.getTime(), style: kh5Style),
+                  article.publishedAt == null
+                      ? Container()
+                      : Text(article.getTime(), style: kh5Style),
                 ],
               ),
               Divider(

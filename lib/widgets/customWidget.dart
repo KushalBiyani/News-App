@@ -83,11 +83,24 @@ Widget buildAppBar(String type) {
   type = type == null ? "" : type.toUpperCase();
   return SliverAppBar(
     centerTitle: true,
+    leading: Container(),
     title: Text(
       '$type NEWS',
       style: kAppbarText,
     ),
     backgroundColor: Colors.black,
     pinned: true,
+  );
+}
+
+Widget normalAppBar(String text) {
+  return AppBar(
+    leading: Container(),
+    title: Text(
+      text,
+      style: kAppbarText,
+    ),
+    centerTitle: true,
+    backgroundColor: Colors.black,
   );
 }

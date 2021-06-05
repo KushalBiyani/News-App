@@ -4,6 +4,7 @@ import 'package:my_news_app/helper/constants.dart';
 import 'package:flag/flag.dart';
 import 'package:my_news_app/pages/homepage/bloc/bloc.dart';
 import 'package:my_news_app/widgets/bloc/bloc.dart';
+import 'package:my_news_app/widgets/customWidget.dart';
 
 class CountrySelectPage extends StatefulWidget {
   final PageController controller;
@@ -57,14 +58,7 @@ class _CountrySelectPageState extends State<CountrySelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Select Country",
-          style: kAppbarText,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
+      appBar: normalAppBar("Select Country"),
       backgroundColor: kBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(8.0),

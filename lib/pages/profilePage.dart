@@ -1,114 +1,70 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_news_app/helper/constants.dart';
+import 'package:my_news_app/helper/firebaseHelper.dart';
+import 'package:my_news_app/model/newsResponseModel.dart';
+import 'package:my_news_app/pages/newsDetail/bloc/bloc.dart';
+import 'package:my_news_app/widgets/bloc/bloc.dart';
 import 'package:my_news_app/widgets/customWidget.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  ProfilePage({Key key}) : super(key: key);
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  User currentUser = FirebaseAuth.instance.currentUser;
 
   Widget _headerWidget(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: Column(
         children: <Widget>[
-          SizedBox(height: 50),
+          SizedBox(height: 20),
           Row(
             children: <Widget>[
               CircleAvatar(
-                radius: 50,
-                backgroundImage: customAdvanceNetworkImage(
-                    'https://instagram.fbom26-1.fna.fbcdn.net/v/t51.2885-19/s150x150/153528906_874730533313174_1105060530992836691_n.jpg?tp=1&_nc_ht=instagram.fbom26-1.fna.fbcdn.net&_nc_ohc=TZ1i7qyxlEgAX_C9kh1&edm=AB32dywBAAAA&ccb=7-4&oh=9644e14e7f64f9b3570e13897390b38e&oe=60BE1007&_nc_sid=c59781'),
-              ),
+                  radius: 60,
+                  backgroundImage:
+                      customAdvanceNetworkImage(currentUser.photoURL)),
               SizedBox(
                 width: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Kushal Biyani',
-                      style: kh1Style.copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Text('App Developer', style: kh4Style),
-                ],
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        currentUser.displayName,
+                        style: kh2Style.copyWith(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        currentUser.email,
+                        style: kh4Style,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
+                ),
               )
             ],
           ),
-          SizedBox(height: 30),
-          Row(
-            children: <Widget>[
-              _estimateWidget('Followers', '826'),
-              _estimateWidget('Following', '251'),
-              _estimateWidget('News Read', '81K'),
-            ],
+          SizedBox(height: 8),
+          Divider(height: 15, thickness: 4),
+          Center(
+            child: Text(
+              "Saved News",
+              style: kh1Style.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
-          SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-
-  Widget _estimateWidget(String text, String count) {
-    return Expanded(
-      child: Center(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text(count, style: kh4Style.copyWith(fontWeight: FontWeight.bold)),
-          SizedBox(height: 10),
-          Text(text, style: kh5Style),
-        ],
-      )),
-    );
-  }
-
-  Widget _settingRow(
-    IconData icon1,
-    String text,
-    bool isEnable,
-  ) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            icon1,
-            color: Colors.white,
-          ),
-          SizedBox(width: 10),
-          Text(
-            text,
-            style: kh3Style.copyWith(fontWeight: FontWeight.bold),
-          ),
-          Expanded(child: SizedBox()),
-          isEnable == null
-              ? Container()
-              : Switch(
-                  activeColor: Colors.teal[400],
-                  inactiveThumbColor: Colors.white,
-                  onChanged: (_) {},
-                  value: isEnable,
-                )
-        ],
-      ),
-    );
-  }
-
-  Widget _logout(IconData icon1, String text) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            icon1,
-            color: Colors.teal,
-          ),
-          SizedBox(width: 10),
-          Text(text,
-              style: kh3Style.copyWith(
-                  fontWeight: FontWeight.bold, color: Colors.teal)),
-          Expanded(child: SizedBox()),
+          Divider(height: 15, thickness: 4),
         ],
       ),
     );
@@ -117,40 +73,154 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBackgroundColor,
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: <Widget>[
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        leading: Container(),
+        title: Text(
+          'Profile',
+          style: kAppbarText,
+        ),
+        actions: [
+          IconButton(
+              icon: Icon(
+                Icons.logout,
+                size: 40,
+              ),
+              onPressed: () async {
+                await logOut();
+                BlocProvider.of<NavigationBloc>(context)
+                    .add(Navigate(pageIndex: 0));
+                Navigator.popAndPushNamed(context, '/login');
+              }),
+          SizedBox(width: 15)
+        ],
+      ),
+      backgroundColor: kBackgroundColor,
+      body: StreamBuilder(
+        stream: getSaved(currentUser.uid),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData) {
+            return Text('No Saved News', style: kh2Style);
+          }
+          if (snapshot.hasError) {
+            return Text('Something went wrong', style: kh2Style);
+          } else {
+            return CustomScrollView(slivers: [
               SliverToBoxAdapter(
                 child: _headerWidget(context),
               ),
-              SliverToBoxAdapter(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                child: Column(
-                  children: <Widget>[
-                    buildDivider(),
-                    _settingRow(Icons.lightbulb_outline, 'Night', true),
-                    buildDivider(),
-                    _settingRow(Icons.notifications, 'Notification', false),
-                    buildDivider(),
-                    _settingRow(Icons.share, 'Social Media', false),
-                    SizedBox(height: 5),
-                    buildDivider(),
-                    SizedBox(height: 5),
-                    _logout(Icons.exit_to_app, 'Logout'),
-                  ],
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => FavouriteCard(
+                    data: snapshot.data.docs[index].data(),
+                  ),
+                  childCount: snapshot.data.docs.length,
                 ),
-              )),
-            ],
-          ),
-        ));
+              ),
+            ]);
+          }
+        },
+      ),
+    );
   }
 }
 
-Widget buildDivider() {
-  return Divider(
-    thickness: 0.5,
-    color: Colors.white38,
-  );
+class FavouriteCard extends StatefulWidget {
+  final Map data;
+  const FavouriteCard({this.data}) : super();
+
+  @override
+  _FavouriteCardState createState() => _FavouriteCardState();
+}
+
+class _FavouriteCardState extends State<FavouriteCard> {
+  @override
+  Widget build(BuildContext context) {
+    Article artical = toArticle(widget.data);
+    return InkWell(
+      onTap: () {
+        BlocProvider.of<DetailBloc>(context)
+            .add(SelectNewsForDetail(article: artical));
+        Navigator.pushNamed(context, '/detail');
+      },
+      child: Dismissible(
+        key: Key(artical.title),
+        direction: DismissDirection.endToStart,
+        background: Container(
+          alignment: Alignment.centerRight,
+          color: Colors.teal,
+          padding: EdgeInsets.only(right: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.delete,
+                size: 30,
+              ),
+              Text('Remove',
+                  style: kh3Style.copyWith(fontWeight: FontWeight.bold))
+            ],
+          ),
+        ),
+        onDismissed: (direction) {
+          deleteItem(artical.url);
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 10),
+          height: 110,
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            children: <Widget>[
+              AspectRatio(
+                aspectRatio: 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: Container(
+                    child: artical.urlToImage == null ||
+                            artical.urlToImage.isEmpty
+                        ? customImage('noImage.jpg',
+                            fit: BoxFit.cover, asset: true)
+                        : customImage(artical.urlToImage, fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: 65,
+                      child: Text(
+                        artical.title,
+                        style: kh4Style,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                      child: Text(
+                        artical.source.name ?? '',
+                        style: kh5Style.copyWith(color: Colors.teal),
+                      ),
+                    )
+                  ],
+                ),
+              ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
