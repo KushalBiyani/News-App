@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       backgroundColor: kBackgroundColor,
       body: StreamBuilder(
-        stream: getSaved(currentUser.uid),
+        stream: getSaved(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -211,7 +211,8 @@ class _FavouriteCardState extends State<FavouriteCard> {
                           EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                       child: Text(
                         artical.source.name ?? '',
-                        style: kh5Style.copyWith(color: Colors.teal),
+                        style: kh5Style.copyWith(
+                            color: Colors.teal, fontWeight: FontWeight.bold),
                       ),
                     )
                   ],

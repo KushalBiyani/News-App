@@ -49,8 +49,8 @@ Future registerUser(firebaseUser) async {
   }
 }
 
-void addsaved(uid, Article article) async {
-  _firestore.collection('users').doc(uid).collection('saved').add({
+void addsaved(Article article) async {
+  _firestore.collection('users').doc(currentUser.uid).collection('saved').add({
     "author": article.author,
     "source": {
       "id": article.source.id,
@@ -65,19 +65,19 @@ void addsaved(uid, Article article) async {
   });
 }
 
-Stream getSaved(uid) {
+Stream getSaved() {
   return FirebaseFirestore.instance
       .collection('users')
-      .doc(uid)
+      .doc(currentUser.uid)
       .collection('saved')
       .orderBy('addedAt', descending: true)
       .snapshots();
 }
 
-Future<bool> checkPresent(String url, uid) async {
+Future<bool> checkPresent(String url) async {
   QuerySnapshot result = await _firestore
       .collection('users')
-      .doc(uid)
+      .doc(currentUser.uid)
       .collection('saved')
       .where('url', isEqualTo: url)
       .get();

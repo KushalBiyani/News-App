@@ -12,6 +12,7 @@ class NewsWebView extends StatefulWidget {
 
 class NewsWebViewState extends State<NewsWebView> {
   final String url;
+  bool isLoading = true;
   NewsWebViewState(this.url);
   @override
   void initState() {
@@ -26,8 +27,23 @@ class NewsWebViewState extends State<NewsWebView> {
         title: Text('Web View'),
         backgroundColor: Colors.black,
       ),
-      body: WebView(
-        initialUrl: url,
+      body: Stack(
+        children: [
+          WebView(
+            javascriptMode: JavascriptMode.unrestricted,
+            initialUrl: url,
+            onPageFinished: (finish) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+          ),
+          isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Stack(),
+        ],
       ),
     );
   }

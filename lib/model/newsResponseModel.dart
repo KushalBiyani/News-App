@@ -47,18 +47,17 @@ class Article {
   String urlToImage;
   DateTime publishedAt;
   String content;
-  bool saved;
 
-  Article(
-      {this.source,
-      this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content,
-      this.saved});
+  Article({
+    this.source,
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+  });
 
   factory Article.fromRawJson(String str) => Article.fromJson(json.decode(str));
 
@@ -75,12 +74,7 @@ class Article {
             ? null
             : DateTime.parse(json["publishedAt"]),
         content: json["content"] == null ? null : json["content"],
-        saved: false,
       );
-
-  void toggleSaved() {
-    this.saved = !this.saved;
-  }
 
   Map<String, dynamic> toJson() => {
         "source": source == null ? null : source.toJson(),
